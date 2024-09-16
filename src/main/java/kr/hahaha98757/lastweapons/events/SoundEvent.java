@@ -1,0 +1,16 @@
+package kr.hahaha98757.lastweapons.events;
+
+import net.minecraft.client.audio.ISound;
+import net.minecraftforge.fml.common.eventhandler.Event;
+
+public class SoundEvent extends Event {
+    private final ISound sound;
+
+    public SoundEvent(ISound sound) {
+        this.sound = sound;
+    }
+
+    public String getSoundName() {
+        return this.sound.getSoundLocation().toString().split(":")[1];
+    }
+}

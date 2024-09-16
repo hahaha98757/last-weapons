@@ -1,14 +1,14 @@
 [
   {
     "modid": "${modid}",
-    "name": "Xample Mod",
-    "description": "A mod that is used as an example.",
+    "name": "Last Weapons",
+    "description": "The mod for Hypixel Zombies. Display your weapons when You Win. There is this feature in Zombies Addon.",
     "version": "${version}",
     "mcversion": "${mcversion}",
-    "url": "https://github.com/romangraef/Forge1.8.9Template/",
-    "updateUrl": "",
+    "url": "https://github.com/hahaha98757/last-weapons",
+    "updateUrl": "https://github.com/hahaha98757/last-weapons/releases",
     "authorList": [
-      "You"
+      "hahaha98757"
     ],
     "credits": "",
     "logoFile": "",

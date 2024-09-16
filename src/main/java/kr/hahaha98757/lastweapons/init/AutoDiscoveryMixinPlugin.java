@@ -1,4 +1,4 @@
-package com.github.hahaha98757.lastweapons.init;
+package kr.hahaha98757.lastweapons.init;
 
 import org.spongepowered.asm.lib.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -109,23 +109,19 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
     @Override
     public List<String> getMixins() {
         if (mixins != null) return mixins;
-        System.out.println("Trying to discover mixins");
         mixins = new ArrayList<>();
         URL classUrl = getClass().getProtectionDomain().getCodeSource().getLocation();
-        System.out.println("Found classes at " + classUrl);
         Path file;
         try {
             file = Paths.get(getBaseUrlForClassUrl(classUrl).toURI());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Base directory found at " + file);
         if (Files.isDirectory(file)) {
             walkDir(file);
         } else {
             walkJar(file);
         }
-        System.out.println("Found mixins: " + mixins);
 
         return mixins;
     }
@@ -163,12 +159,10 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-
     }
 
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-
     }
 
     @Override
@@ -183,6 +177,5 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
-
     }
 }
