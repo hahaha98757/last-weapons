@@ -45,6 +45,7 @@ public class LastWeapons {
     public void init(FMLInitializationEvent event) {
         ClientRegistry.registerKeyBinding(this.toggleLastWeapons);
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new UpdateChecker());
     }
 
     @Mod.EventHandler

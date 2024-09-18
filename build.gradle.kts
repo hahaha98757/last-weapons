@@ -80,6 +80,7 @@ dependencies {
         isTransitive = false
     }
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")
+    annotationProcessor("com.google.code.gson:gson:2.8.9")
 
     // If you don't want to log in with your real minecraft account, remove this line
 //    runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.2.1")

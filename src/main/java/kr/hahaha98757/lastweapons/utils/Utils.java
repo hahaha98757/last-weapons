@@ -2,6 +2,8 @@ package kr.hahaha98757.lastweapons.utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.HoverEvent;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
@@ -43,6 +45,21 @@ public class Utils {
 
     public static void addChatLine(String text) {
         mc.thePlayer.addChatComponentMessage(new ChatComponentText(LINE + "\n" + text + "\n" + LINE));
+    }
+
+    public static void addChatWithURL(String text1, String urlText, String url, String showURLText, String text2) {
+        ChatComponentText url1 = new ChatComponentText(urlText);
+
+        url1.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
+        url1.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(showURLText)));
+
+        ChatComponentText text = new ChatComponentText("");
+
+        text.appendSibling(new ChatComponentText(text1));
+        text.appendSibling(url1);
+        text.appendSibling(new ChatComponentText(text2));
+
+        mc.thePlayer.addChatComponentMessage(text);
     }
 
     public static float getX() {
