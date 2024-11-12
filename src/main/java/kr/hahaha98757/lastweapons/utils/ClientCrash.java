@@ -36,7 +36,7 @@ public class ClientCrash {
                 if (haveZombiesAddon)
                     throw new GameEnd("You are using Zombies Addon. Remove Last Weapons mod.");
 
-                throw new GameEnd("Unknown Error.");
+                throw new GameEnd();
             default:
                 break;
         }

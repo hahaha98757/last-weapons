@@ -11,6 +11,10 @@ public class SoundEvent extends Event {
     }
 
     public String getSoundName() {
-        return this.sound.getSoundLocation().toString().split(":")[1];
+        try {
+            return this.sound.getSoundLocation().toString().split(":")[1];
+        } catch (Exception e) {
+            return "";
+        }
     }
 }

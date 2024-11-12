@@ -3,15 +3,17 @@ package kr.hahaha98757.lastweapons;
 import kr.hahaha98757.lastweapons.events.SoundEvent;
 import kr.hahaha98757.lastweapons.events.TitleEvent;
 import kr.hahaha98757.lastweapons.utils.ClientCrash;
-import kr.hahaha98757.lastweapons.utils.LanguageSupport;
 import kr.hahaha98757.lastweapons.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -28,7 +30,7 @@ import org.lwjgl.input.Keyboard;
 public class LastWeapons {
     public static final String MODID = "lastweapons";
     public static final String NAME = "Last Weapons";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.0.1";
     private final Minecraft mc;
     private final KeyBinding toggleLastWeapons;
     private static boolean lastWeapons = true;
@@ -97,10 +99,27 @@ public class LastWeapons {
             int x = (int) (Utils.getX() / 2 - 88);
             int y = (int) (Utils.getY() - 19);
 
+            GlStateManager.pushAttrib();
+
             for (int i = 0; i < 9; i++) {
-                renderItem.renderItemAndEffectIntoGUI(weapons[i], x + 20*i, y);
-                renderItem.renderItemOverlayIntoGUI(fr, weapons[i], x + 20*i, y, null);
+                ItemStack weapon = weapons[i];
+
+                if (weapon != null) {
+                    int level = Utils.getLevel(EnumChatFormatting.getTextWithoutFormattingCodes(weapon.getDisplayName()));
+
+                    renderItem.renderItemAndEffectIntoGUI(weapon, x + 20*i, y);
+
+                    if (level != 0) {
+                        mc.getTextureManager().bindTexture(new ResourceLocation("lastweapons", "textures/items/level" + level + ".png"));
+                        GlStateManager.disableDepth();
+                        Gui.drawModalRectWithCustomSizedTexture(x + 20*i, y, 0, 0, 16,16, 16, 16);
+                        GlStateManager.enableDepth();
+                    }
+                    renderItem.renderItemOverlayIntoGUI(fr, weapons[i], x + 20*i, y, null);
+                }
             }
+
+            GlStateManager.popAttrib();
 
             x = (int) (Utils.getX() / 2 + 12);
             y = (int) (Utils.getY() - 60);
@@ -122,8 +141,7 @@ public class LastWeapons {
 
     @SubscribeEvent
     public void onTitle(TitleEvent event) {
-        if (LanguageSupport.WIN.contains(EnumChatFormatting.getTextWithoutFormattingCodes(event.getTitle()).replace("!", "")))
-            win = true;
+        if (event.getTitle().equals("You Win!") || event.getTitle().equals("승리했습니다!")) win = true;
     }
 
     @SubscribeEvent

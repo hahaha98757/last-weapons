@@ -1,5 +1,6 @@
 package kr.hahaha98757.lastweapons.events;
 
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 public class TitleEvent extends Event {
@@ -10,6 +11,6 @@ public class TitleEvent extends Event {
     }
 
     public String getTitle() {
-        return this.title;
+        return EnumChatFormatting.getTextWithoutFormattingCodes(this.title);
     }
 }
