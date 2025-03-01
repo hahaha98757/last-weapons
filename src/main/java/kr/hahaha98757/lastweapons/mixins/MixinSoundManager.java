@@ -14,6 +14,6 @@ public class MixinSoundManager {
 
     @Inject(method = "playSound", at = @At("HEAD"))
     private void playSound(ISound p_sound, CallbackInfo ci) {
-        MinecraftForge.EVENT_BUS.post(new SoundEvent(p_sound));
+        if (p_sound != null) MinecraftForge.EVENT_BUS.post(new SoundEvent(p_sound));
     }
 }

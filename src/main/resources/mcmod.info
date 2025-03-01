@@ -6,7 +6,7 @@
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "https://github.com/hahaha98757/last-weapons",
-    "updateUrl": "https://github.com/hahaha98757/last-weapons/releases",
+    "updateUrl": "",
     "authorList": [
       "hahaha98757"
     ],

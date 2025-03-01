@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import org.apache.commons.lang3.SystemUtils
 
 plugins {
@@ -8,6 +6,7 @@ plugins {
     id("gg.essential.loom") version "0.10.0.+"
     id("dev.architectury.architectury-pack200") version "0.1.3"
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    kotlin("jvm") version "2.1.10"
 }
 
 //Constants:
@@ -17,6 +16,8 @@ val mcVersion: String by project
 val version: String by project
 val mixinGroup = "$baseGroup.mixins"
 val modid: String by project
+val transformerFile = file("src/main/resources/accesstransformer.cfg")
+val archiveName = "LastWeapons"
 
 // Toolchains:
 java {
@@ -46,15 +47,26 @@ loom {
         pack200Provider.set(dev.architectury.pack200.java.Pack200Adapter())
         // If you don't want mixins, remove this lines
         mixinConfig("mixins.$modid.json")
+        if (transformerFile.exists()) {
+            println("Installing access transformer")
+            accessTransformer(transformerFile)
+        }
     }
     // If you don't want mixins, remove these lines
+    @Suppress("UnstableApiUsage")
     mixin {
         defaultRefmapName.set("mixins.$modid.refmap.json")
     }
 }
 
+tasks.compileJava {
+    dependsOn(tasks.processResources)
+}
+
 sourceSets.main {
     output.setResourcesDir(sourceSets.main.flatMap { it.java.classesDirectory })
+    java.srcDir(layout.projectDirectory.dir("src/main/kotlin"))
+    kotlin.destinationDirectory.set(java.destinationDirectory)
 }
 
 // Dependencies:
@@ -63,7 +75,7 @@ repositories {
     mavenCentral()
     maven("https://repo.spongepowered.org/maven/")
     // If you don't want to log in with your real minecraft account, remove this line
-//    maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
+    maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
 }
 
 val shadowImpl: Configuration by configurations.creating {
@@ -75,6 +87,8 @@ dependencies {
     mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
     forge("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9")
 
+    shadowImpl(kotlin("stdlib-jdk8"))
+
     // If you don't want mixins, remove these lines
     shadowImpl("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         isTransitive = false
@@ -83,7 +97,7 @@ dependencies {
     annotationProcessor("com.google.code.gson:gson:2.8.9")
 
     // If you don't want to log in with your real minecraft account, remove this line
-//    runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.2.1")
+    runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.2.1")
 }
 
 // Tasks:
@@ -93,7 +107,7 @@ tasks.withType(JavaCompile::class) {
 }
 
 tasks.withType(org.gradle.jvm.tasks.Jar::class) {
-    archiveBaseName.set("LastWeapons")
+    archiveBaseName.set(archiveName)
     manifest.attributes.run {
         this["FMLCorePluginContainsFMLMod"] = "true"
         this["ForceLoadAsMod"] = "true"
@@ -101,6 +115,8 @@ tasks.withType(org.gradle.jvm.tasks.Jar::class) {
         // If you don't want mixins, remove these lines
         this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
         this["MixinConfigs"] = "mixins.$modid.json"
+        if (transformerFile.exists())
+            this["FMLAT"] = "${modid}_at.cfg"
     }
 }
 

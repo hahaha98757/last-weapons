@@ -1,8 +1,10 @@
 {
-  "package": "${basePackage}.mixins",
-  "plugin": "${basePackage}.init.AutoDiscoveryMixinPlugin",
+  "package": "kr.hahaha98757.lastweapons.mixins",
   "refmap": "mixins.${modid}.refmap.json",
   "minVersion": "0.7",
   "compatibilityLevel": "JAVA_8",
-  "__comment": "You do not need to manually register mixins in this template. Check the auto discovery mixin plugin for more info."
+  "client": [
+    "MixinGuiIngame",
+    "MixinSoundManager"
+  ]
 }
