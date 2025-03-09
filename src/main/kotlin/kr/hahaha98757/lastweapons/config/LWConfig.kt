@@ -2,44 +2,27 @@ package kr.hahaha98757.lastweapons.config
 
 import net.minecraftforge.common.config.Configuration
 
-object LWConfig {
-    lateinit var config: Configuration
+class LWConfig(val config: Configuration) {
+    init {
+        loadConfig()
+    }
 
     var toggle = true
     var displayArmors = true
     var displayWeaponsLevel = true
     var displayCooledDownSkill = true
 
-    fun loadConfig() {
+    private fun loadConfig() {
         config.load()
 
-        try {
-            toggle = config.getBoolean(
-                "Toggle Last Weapons",
-                Configuration.CATEGORY_GENERAL,
-                true,
-                "Displays your weapons when you win."
-            )
-            displayArmors = config.getBoolean(
-                "Display Armors",
-                Configuration.CATEGORY_GENERAL,
-                true,
-                "Displays your armors."
-            )
-            displayWeaponsLevel = config.getBoolean(
-                "Display Weapons Level",
-                Configuration.CATEGORY_GENERAL,
-                true,
-                "Displays level of weapons and perks."
-            )
-            displayCooledDownSkill = config.getBoolean(
-                "Display Cooled Down Skill",
-                Configuration.CATEGORY_GENERAL,
-                true,
-                "Displays a black and white texture when a your skill is on cooldown."
-            )
-        } finally {
-            if (config.hasChanged()) config.save()
-        }
+        toggle = config.get(Configuration.CATEGORY_GENERAL, "Toggle Last Weapons", true, "Displays your weapons when you win.").boolean
+        displayArmors = config.get(Configuration.CATEGORY_GENERAL, "Display Armors", true, "Displays your armors.").boolean
+        displayWeaponsLevel = config.get(Configuration.CATEGORY_GENERAL, "Display Weapons Level", true, "Displays level of weapons and perks.").boolean
+        displayCooledDownSkill = config.get(Configuration.CATEGORY_GENERAL, "Display Cooled Down Skill", true, "Displays a black and white texture when a your skill is on cooldown.").boolean
+    }
+
+    fun save() {
+        config.save()
+        loadConfig()
     }
 }

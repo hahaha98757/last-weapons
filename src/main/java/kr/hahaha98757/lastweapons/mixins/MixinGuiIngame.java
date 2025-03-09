@@ -1,8 +1,8 @@
 package kr.hahaha98757.lastweapons.mixins;
 
-import kr.hahaha98757.lastweapons.events.TitleEvent;
+import kr.hahaha98757.lastweapons.LastWeapons;
 import net.minecraft.client.gui.GuiIngame;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraft.util.EnumChatFormatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,6 +13,9 @@ public class MixinGuiIngame {
 
     @Inject(method = "displayTitle", at = @At("HEAD"))
     private void displayTitle(String title, String subTitle, int timeFadeIn, int displayTime, int timeFadeOut, CallbackInfo ci) {
-        if (title != null) MinecraftForge.EVENT_BUS.post(new TitleEvent(title));
+        if (title != null) {
+            String text = EnumChatFormatting.getTextWithoutFormattingCodes(title);
+            if (text.equals("You Win!") || text.equals("승리했습니다!")) LastWeapons.getInstance().getEventListener().setWin(true);
+        }
     }
 }

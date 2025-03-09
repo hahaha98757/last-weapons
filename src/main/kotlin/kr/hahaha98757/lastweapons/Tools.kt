@@ -5,14 +5,21 @@ import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.scoreboard.ScorePlayerTeam
 import net.minecraft.util.ChatComponentText
 import net.minecraft.util.EnumChatFormatting
+import net.minecraftforge.fml.common.Loader
+import java.io.File
 
 val mc: Minecraft by lazy { Minecraft.getMinecraft() }
+val modFile: File by lazy {
+    var file = File("")
+    for (mod in Loader.instance().modList) if (mod.modId == MODID) file = mod.source
+    file
+}
 
 const val LINE = "§e-----------------------------------------------------"
 
-fun addChat(text: String) = mc.thePlayer.addChatMessage(ChatComponentText(text))
+fun addChat(text: ChatComponentText) = if (mc.thePlayer != null) mc.thePlayer.addChatMessage(text) else println(text.formattedText)
 
-fun addChatLine(text: String) = mc.thePlayer.addChatMessage(ChatComponentText("$LINE\n$text\n$LINE"))
+fun addChatLine(text: String) = if (mc.thePlayer != null) mc.thePlayer.addChatMessage(ChatComponentText("$LINE\n$text\n$LINE")) else println("With line: $text")
 
 fun getX() = ScaledResolution(mc).scaledWidth.toFloat()
 
@@ -50,4 +57,10 @@ fun isNotPlayZombies(): Boolean {
     for (score in scoreboard.getSortedScores(objective))
         return !EnumChatFormatting.getTextWithoutFormattingCodes(ScorePlayerTeam.formatPlayerName(scoreboard.getPlayersTeam(score.playerName), score.playerName)).replace(Regex("[^A-Za-z0-9_]"), "").contains(mc.thePlayer.name)
     return true
+}
+
+fun runBatchFileAndQuit(file: File, commands: String) {
+    file.writeText(commands)
+    Runtime.getRuntime().exec("cmd /c start ${file.absolutePath}")
+    mc.shutdown()
 }
