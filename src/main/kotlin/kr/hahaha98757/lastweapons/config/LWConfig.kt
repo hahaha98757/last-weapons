@@ -1,9 +1,13 @@
 package kr.hahaha98757.lastweapons.config
 
 import net.minecraftforge.common.config.Configuration
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 
-class LWConfig(val config: Configuration) {
-    init {
+object LWConfig {
+    lateinit var config: Configuration
+
+    fun init(event: FMLPreInitializationEvent) {
+        config = Configuration(event.suggestedConfigurationFile)
         loadConfig()
     }
 

@@ -1,5 +1,6 @@
 package kr.hahaha98757.lastweapons
 
+import kr.hahaha98757.lastweapons.config.LWConfig
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.init.Items
@@ -12,11 +13,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 class EventListener {
     private val weapons = arrayOfNulls<ItemStack>(9)
     private val armors = arrayOfNulls<ItemStack>(4)
-    var win = false
+    companion object {
+        @JvmStatic
+        var win = false
+    }
 
     @SubscribeEvent
     fun onRender(event: RenderGameOverlayEvent.Text) {
-        if (!LastWeapons.instance.config.toggle) return
+        if (!LWConfig.toggle) return
         if (isNotPlayZombies()) {
             win = false
             return
@@ -34,7 +38,7 @@ class EventListener {
                 val weapon = weapons[i]
 
                 if (weapon != null) {
-                    if (i == 4 && LastWeapons.instance.config.displayCooledDownSkill) {
+                    if (i == 4 && LWConfig.displayCooledDownSkill) {
                         if (weapon.item == Items.dye && weapon.itemDamage == 8) {
                             val name = weapon.displayName
                             if (name.contains("Heal Skill") || name.contains("회복 기술"))
@@ -51,7 +55,7 @@ class EventListener {
 
                     renderItem.renderItemAndEffectIntoGUI(weapon, x + 20*i, y)
 
-                    if (LastWeapons.instance.config.displayWeaponsLevel && level != 0)
+                    if (LWConfig.displayWeaponsLevel && level != 0)
                         displayTexture("textures/items/level$level.png", x + 20*i, y)
                     renderItem.renderItemOverlayIntoGUI(fr, weapon, x + 20*i, y, null)
                 }
@@ -59,7 +63,7 @@ class EventListener {
 
             GlStateManager.popAttrib()
 
-            if (LastWeapons.instance.config.displayArmors) {
+            if (LWConfig.displayArmors) {
                 x = (getX() / 2 + 12).toInt()
                 y = (getY() - 60).toInt()
 

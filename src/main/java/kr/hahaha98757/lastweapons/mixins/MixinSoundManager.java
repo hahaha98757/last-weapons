@@ -1,6 +1,6 @@
 package kr.hahaha98757.lastweapons.mixins;
 
-import kr.hahaha98757.lastweapons.LastWeapons;
+import kr.hahaha98757.lastweapons.EventListener;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.SoundManager;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +15,7 @@ public class MixinSoundManager {
     private void playSound(ISound p_sound, CallbackInfo ci) {
         if (p_sound != null) {
             String soundName = p_sound.getSoundLocation().toString();
-            if (soundName.equals("minecraft:mob.wither.spawn")) LastWeapons.getInstance().getEventListener().setWin(false);
+            if (soundName.equals("minecraft:mob.wither.spawn")) EventListener.setWin(false);
         }
     }
 }

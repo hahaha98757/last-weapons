@@ -91,16 +91,19 @@ object UpdateChecker {
     //0: Required update, 1: Using recommended(= latest), 2: Using latest, 3: Using old ver(latest != recommended), 4: New recommended, 5: New latest
     private fun compareVersion(): Int {
         val modVer = Version.toVersion(VERSION)
+        if (modVer > latest) return 1
 
-        if (latest == recommended) {
-            if (modVer == recommended) return 1
-            if (recommended.x > modVer.x) return 0
-            return 4
+        if (latest == recommended) return when {
+            modVer == recommended -> 1
+            recommended.x > modVer.x -> 0
+            else -> 4
         }
-        if (modVer == latest) return 2
-        if (modVer == recommended || modVer.x == latest.x && modVer.y == latest.y && modVer.z == latest.z) return 5
-        if (recommended.x > modVer.x) return -1
-        return 3
+
+        return when {
+            modVer == latest -> 2
+            modVer < recommended -> 3
+            else -> 5
+        }
     }
 
     fun autoUpdate() = Thread {
@@ -117,7 +120,7 @@ object UpdateChecker {
                 println("Run auto update.")
                 runBatchFileAndQuit(File(File(mc.mcDataDir, "mods"), "deleter.bat"), """
                         @echo off
-                        echo It should continue after Minecraft quits. If Minecraft quits quickly, you can skip the wait by pressing Ctrl + C, than N.
+                        echo It should continue after Minecraft quits.
                         timeout /t 2 /nobreak
                         pause
                         del "${modFile.absolutePath}"

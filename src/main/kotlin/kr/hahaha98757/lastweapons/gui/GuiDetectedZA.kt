@@ -31,7 +31,7 @@ class GuiDetectedZA: GuiScreen() {
                 println("Run remove Last Weapons.")
                 runBatchFileAndQuit(File(File(mc.mcDataDir, "mods"), "deleter.bat"), """
                     @echo off
-                    echo It should continue after Minecraft quits. If Minecraft quits quickly, you can skip the wait by pressing Ctrl + C, than N.
+                    echo It should continue after Minecraft quits.
                     timeout /t 2 /nobreak
                     pause
                     del "${modFile.absolutePath}"
@@ -46,7 +46,7 @@ class GuiDetectedZA: GuiScreen() {
                         println("Run remove Zombies Addon.")
                         runBatchFileAndQuit(File(File(mc.mcDataDir, "mods"), "deleter.bat"), """
                             @echo off
-                            echo It should continue after Minecraft quits. If Minecraft quits quickly, you can skip the wait by pressing Ctrl + C, than N.
+                            echo It should continue after Minecraft quits.
                             timeout /t 2 /nobreak
                             pause
                             del "${source.absolutePath}"
