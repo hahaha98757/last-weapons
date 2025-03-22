@@ -17,7 +17,7 @@ import java.io.File
 
 const val MODID = "lastweapons"
 const val NAME = "Last Weapons"
-const val VERSION = "1.2.1"
+const val VERSION = "1.2.3"
 
 @Mod(modid = MODID, name = NAME, version = VERSION, guiFactory = "kr.hahaha98757.lastweapons.config.LWGuiFactory")
 class LastWeapons {

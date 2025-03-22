@@ -25,6 +25,9 @@ This project is licensed under the MIT License as specified in the [LICENSE](LIC
 
 ## Update Log
 
+### 1.2.3
+- Fixed bugs.
+
 ### 1.2.2
 - Fixed bugs.
 
