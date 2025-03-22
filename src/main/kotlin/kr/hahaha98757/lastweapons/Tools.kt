@@ -26,13 +26,13 @@ fun getX() = ScaledResolution(mc).scaledWidth.toFloat()
 fun getY() = ScaledResolution(mc).scaledHeight.toFloat()
 
 fun getLevel(itemName: String): Int {
-    var name = ""
+    var name = itemName
     if (itemName.contains("Ultimate")) try {
         name = itemName.split("Ultimate")[1].trim()
     } catch (e: Exception) {
         return 0
     }
-    if (name.contains("레벨")) name = itemName.split("레벨")[0].trim()
+    if (itemName.contains("레벨")) name = itemName.split("레벨")[0].trim()
 
     return when (name) {
         "II", "Extra Health II", "추가 체력 II" -> 2

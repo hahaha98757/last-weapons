@@ -21,7 +21,7 @@ class GuiUpdateScreen(private val i: Int): GuiScreen() {
     override fun initGui() {
         super.initGui()
         this.buttonList.clear()
-        this.buttonList.add(GuiButton(0, this.width / 2 - 100, this.height / 2, "Auto update and quit the game"))
+        this.buttonList.add(GuiButton(0, this.width / 2 - 100, this.height / 2, "Auto update(Windows only)"))
         this.buttonList.add(GuiButton(1, this.width / 2 - 100, this.height / 2 + 30, "Open download URL"))
         if (i != 0) this.buttonList.add(GuiButton(2, this.width / 2 - 100, this.height / 2 + 60, "Continue"))
         this.buttonList.add(GuiButton(3, this.width / 2 - 100, this.height / 2 + if (i != 0) 90 else 60, "Quit the game"))

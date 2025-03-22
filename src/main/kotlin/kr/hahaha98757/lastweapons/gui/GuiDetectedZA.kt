@@ -20,8 +20,8 @@ class GuiDetectedZA: GuiScreen() {
     override fun initGui() {
         super.initGui()
         this.buttonList.clear()
-        this.buttonList.add(GuiButton(0, this.width / 2 - 100, this.height / 2, "Remove Last Weapons"))
-        this.buttonList.add(GuiButton(1, this.width / 2 - 100, this.height / 2 + 30, "Remove Zombies Addon"))
+        this.buttonList.add(GuiButton(0, this.width / 2 - 100, this.height / 2, "Remove Last Weapons(Windows only)"))
+        this.buttonList.add(GuiButton(1, this.width / 2 - 100, this.height / 2 + 30, "Remove Zombies Addon(Windows only)"))
         this.buttonList.add(GuiButton(2, this.width / 2 - 100, this.height / 2 + 60, "Quit the game"))
     }
 
