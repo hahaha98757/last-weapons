@@ -25,29 +25,6 @@ fun getX() = ScaledResolution(mc).scaledWidth.toFloat()
 
 fun getY() = ScaledResolution(mc).scaledHeight.toFloat()
 
-fun getLevel(itemName: String): Int {
-    var name = itemName
-    if (itemName.contains("Ultimate")) try {
-        name = itemName.split("Ultimate")[1].trim()
-    } catch (e: Exception) {
-        return 0
-    }
-    if (itemName.contains("레벨")) name = itemName.split("레벨")[0].trim()
-
-    return when (name) {
-        "II", "Extra Health II", "추가 체력 II" -> 2
-        "III", "Extra Health III", "추가 체력 III" -> 3
-        "IV", "Extra Health IV", "추가 체력 IV" -> 4
-        "V", "Extra Health V", "추가 체력 V" -> 5
-        "Extra Health VI", "추가 체력 VI" -> 6
-        "Extra Health VII", "추가 체력 VII" -> 7
-        "Extra Health VIII", "추가 체력 VIII" -> 8
-        "Extra Health IX", "추가 체력 IX" -> 9
-        "Extra Health X", "추가 체력 X" -> 10
-        else -> 0
-    }
-}
-
 fun isNotPlayZombies(): Boolean {
     if (mc.thePlayer == null || mc.theWorld == null) return true
 
@@ -63,7 +40,7 @@ fun isNotPlayZombies(): Boolean {
 }
 
 fun runBatchFileAndQuit(file: File, commands: String) {
-    file.writeText(commands)
+    file.writeText(commands.replace("\n", "\r\n"))
     Runtime.getRuntime().exec("cmd /c start ${file.absolutePath}")
     mc.shutdown()
 }

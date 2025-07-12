@@ -25,6 +25,10 @@ This project is licensed under the MIT License as specified in the [LICENSE](LIC
 
 ## Update Log
 
+### 1.2.4
+- Fixed bugs.
+- Fixed mod deleter.
+
 ### 1.2.3
 - Fixed bugs.
 

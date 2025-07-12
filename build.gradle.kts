@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 import org.apache.commons.lang3.SystemUtils
 
 plugins {
@@ -54,9 +56,7 @@ loom {
     }
     // If you don't want mixins, remove these lines
     @Suppress("UnstableApiUsage")
-    mixin {
-        defaultRefmapName.set("mixins.$modid.refmap.json")
-    }
+    mixin { defaultRefmapName.set("mixins.$modid.refmap.json") }
 }
 
 tasks.compileJava {
@@ -90,11 +90,8 @@ dependencies {
     shadowImpl(kotlin("stdlib-jdk8"))
 
     // If you don't want mixins, remove these lines
-    shadowImpl("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
-        isTransitive = false
-    }
+    shadowImpl("org.spongepowered:mixin:0.7.11-SNAPSHOT") { isTransitive = false }
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")
-    annotationProcessor("com.google.code.gson:gson:2.8.9")
 
     // If you don't want to log in with your real minecraft account, remove this line
     runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.2.1")
@@ -115,8 +112,7 @@ tasks.withType(org.gradle.jvm.tasks.Jar::class) {
         // If you don't want mixins, remove these lines
         this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
         this["MixinConfigs"] = "mixins.$modid.json"
-        if (transformerFile.exists())
-            this["FMLAT"] = "${modid}_at.cfg"
+        if (transformerFile.exists()) this["FMLAT"] = "${modid}_at.cfg"
     }
 }
 
@@ -131,6 +127,7 @@ tasks.processResources {
     }
 
     rename("accesstransformer.cfg", "META-INF/${modid}_at.cfg")
+    from("LICENSE") { rename { "LICENSE.txt" } }
 }
 
 

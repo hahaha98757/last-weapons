@@ -29,11 +29,15 @@ class GuiDetectedZA: GuiScreen() {
         when (button.id) {
             0 -> {
                 println("Run remove Last Weapons.")
-                runBatchFileAndQuit(File(File(mc.mcDataDir, "mods"), "deleter.bat"), """
+                runBatchFileAndQuit(File(mc.mcDataDir, "mods/deleter_lastweapons.bat"), """
                     @echo off
-                    echo It should continue after Minecraft quits.
+                    chcp 65001
+                    echo This is a mod deleter. It should continue after Minecraft quits.
+                    echo 이것은 모드 제거 프로그램 입니다. 마인크래프트가 종료된 후 계속 진행되어야 합니다.
                     timeout /t 2 /nobreak
                     pause
+                    echo Deleting Last Weapons...
+                    echo Last Weapons를 제거하는 중...
                     del "${modFile.absolutePath}"
                     exit
                 """.trimIndent())
@@ -44,14 +48,18 @@ class GuiDetectedZA: GuiScreen() {
                     val source = mod.source
                     if (source != null) {
                         println("Run remove Zombies Addon.")
-                        runBatchFileAndQuit(File(File(mc.mcDataDir, "mods"), "deleter.bat"), """
+                        runBatchFileAndQuit(File(mc.mcDataDir, "mods/deleter_lastweapons.bat"), """
                             @echo off
-                            echo It should continue after Minecraft quits.
+                            chcp 65001
+                            echo This is a mod deleter. It should continue after Minecraft quits.
+                            echo 이것은 모드 제거 프로그램 입니다. 마인크래프트가 종료된 후 계속 진행되어야 합니다.
                             timeout /t 2 /nobreak
                             pause
+                            echo Deleting Zombies Addon...
+                            echo Zombies Addon을 제거하는 중...
                             del "${source.absolutePath}"
                             exit
-                            """.trimIndent())
+                        """.trimIndent())
                     }
                 }
             }

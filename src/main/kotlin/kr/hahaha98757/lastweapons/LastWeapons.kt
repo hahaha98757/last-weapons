@@ -6,7 +6,6 @@ import kr.hahaha98757.lastweapons.update.UpdateChecker
 import kr.hahaha98757.lastweapons.update.UpdateCheckerListener
 import net.minecraftforge.client.event.GuiScreenEvent
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.fml.client.event.ConfigChangedEvent
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
@@ -17,16 +16,16 @@ import java.io.File
 
 const val MODID = "lastweapons"
 const val NAME = "Last Weapons"
-const val VERSION = "1.2.3"
+const val VERSION = "1.2.4"
 
 @Mod(modid = MODID, name = NAME, version = VERSION, guiFactory = "kr.hahaha98757.lastweapons.config.LWGuiFactory")
 class LastWeapons {
     private var hasZombiesAddon = false
-    private var start = false
 
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         File(mc.mcDataDir, "mods/deleter.bat").delete()
+        File(mc.mcDataDir, "mods/deleter_lastweapons.bat").delete()
         LWConfig.init(event)
     }
 
@@ -46,19 +45,8 @@ class LastWeapons {
 
     @SubscribeEvent
     fun startGame(event: GuiScreenEvent.DrawScreenEvent.Post) {
-        if (start) return
-        if (hasZombiesAddon) {
-            mc.displayGuiScreen(GuiDetectedZA())
-            start = true
-            return
-        }
-
-        UpdateChecker.checkUpdate()
-        start = true
-    }
-
-    @SubscribeEvent
-    fun onConfigChange(event: ConfigChangedEvent.OnConfigChangedEvent) {
-        if (event.modID == MODID) LWConfig.save()
+        MinecraftForge.EVENT_BUS.unregister(this)
+        if (hasZombiesAddon) mc.displayGuiScreen(GuiDetectedZA())
+        else UpdateChecker.checkUpdate()
     }
 }

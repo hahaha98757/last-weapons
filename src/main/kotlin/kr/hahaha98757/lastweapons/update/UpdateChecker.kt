@@ -7,6 +7,7 @@ import kr.hahaha98757.lastweapons.gui.GuiUpdateScreen
 import net.minecraft.event.ClickEvent
 import net.minecraft.event.HoverEvent
 import net.minecraft.util.ChatComponentText
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.apache.commons.io.IOUtils
@@ -23,8 +24,8 @@ import javax.net.ssl.TrustManagerFactory
 
 object UpdateChecker {
     private const val URL = "https://raw.githubusercontent.com/hahaha98757/last-weapons/master/update.json"
-    private var latest: Version = Version()
-    private var recommended: Version = Version()
+    private var latest = Version()
+    private var recommended = Version()
 
     private var gui = false
 
@@ -56,13 +57,13 @@ object UpdateChecker {
             connection.connectTimeout = 60000
             connection.readTimeout = 60000
 
-            val inputStream = connection.inputStream
-            val jsonResponse = IOUtils.toString(inputStream, StandardCharsets.UTF_8)
-            inputStream.close()
+            connection.inputStream.use {
+                val jsonResponse = IOUtils.toString(it, StandardCharsets.UTF_8)
 
-            val json = JsonParser().parse(jsonResponse).asJsonObject
-            latest = Version.toVersion(json.get("latest").asString)
-            recommended = Version.toVersion(json.get("recommended").asString)
+                val json = JsonParser().parse(jsonResponse).asJsonObject
+                latest = Version.toVersion(json.get("latest").asString)
+                recommended = Version.toVersion(json.get("recommended").asString)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             latest = Version()
@@ -118,13 +119,17 @@ object UpdateChecker {
             Files.copy(connection.inputStream, newMod.toPath(), StandardCopyOption.REPLACE_EXISTING)
             mc.addScheduledTask {
                 println("Run auto update.")
-                runBatchFileAndQuit(File(File(mc.mcDataDir, "mods"), "deleter.bat"), """
-                        @echo off
-                        echo It should continue after Minecraft quits.
-                        timeout /t 2 /nobreak
-                        pause
-                        del "${modFile.absolutePath}"
-                        exit
+                runBatchFileAndQuit(File(mc.mcDataDir, "mods/deleter_lastweapons.bat"), """
+                    @echo off
+                    chcp 65001
+                    echo This is a mod deleter. It should continue after Minecraft quits.
+                    echo 이것은 모드 제거 프로그램 입니다. 마인크래프트가 종료된 후 계속 진행되어야 합니다.
+                    timeout /t 2 /nobreak
+                    pause
+                    echo Deleting old mod file...
+                    echo 이전 모드 파일을 삭제하는 중...
+                    del "${modFile.absolutePath}"
+                    exit
                 """.trimIndent())
             }
         } catch (e: Exception) {
@@ -135,13 +140,10 @@ object UpdateChecker {
 }
 
 class UpdateCheckerListener {
-    private var join = false
-
     @SubscribeEvent
     fun onPlayerJoin(event: EntityJoinWorldEvent) {
         if (event.entity != mc.thePlayer) return
-        if (join) return
         UpdateChecker.checkUpdate()
-        join = true
+        MinecraftForge.EVENT_BUS.unregister(this)
     }
 }
