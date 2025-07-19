@@ -1,0 +1,37 @@
+lastweapons.gui.windowsOnly=This feature is only available on Windows.
+
+lastweapons.gui.detectedZA.title=Detected Zombies Addon
+lastweapons.gui.detectedZA.message=Zombies Addon has Last Weapons.
+lastweapons.gui.detectedZA.button.removeLW=Remove Last Weapons(Windows only)
+lastweapons.gui.detectedZA.button.removeZA=Remove Zombies Addon(Windows only)
+
+lastweapons.gui.downloadWaiting.title=Downloading...
+lastweapons.gui.downloadWaiting.failed=Failed download the update.
+
+lastweapons.gui.updateScreen.title.normal=The new recommended version has been released.
+lastweapons.gui.updateScreen.title.mandatory=§cThe mandatory update has been released.
+lastweapons.gui.updateScreen.message.mandatory=You should update this mod or can't play the game.
+lastweapons.gui.updateScreen.button.autoupdate=Auto update(Windows only)
+lastweapons.gui.updateScreen.button.url=Open download URL
+lastweapons.gui.updateScreen.button.continue=Continue
+
+
+lastweapons.update.downloadText= §9Click here to download.
+lastweapons.update.downloadHover=Open download URL.
+lastweapons.update.latestWarning=§cThe latest version is not perfect. There may be bugs.
+lastweapons.update.usingLatest=You are using the latest version.
+lastweapons.update.newLatest=The new latest version has been released.
+lastweapons.update.currentVer=Current version: %s
+lastweapons.update.latestVer=Latest version: %s
+
+
+lastweapons.config.enableMod=Enable Mod
+lastweapons.config.enableMod.description=Enable or disable Last Weapons.
+lastweapons.config.language=Language
+lastweapons.config.language.description=The language for this mod.
+lastweapons.config.displayArmors=Display Armors
+lastweapons.config.displayArmors.description=Displays armors in Last Weapons.
+lastweapons.config.displayWeaponsLevel=Display Weapons Level
+lastweapons.config.displayWeaponsLevel.description=Displays weapons level in Last Weapons.
+lastweapons.config.displayCooledDownSkill=Display Cooled Down Skill
+lastweapons.config.displayCooledDownSkill.description=Displays a cooled down skill in Last Weapons.

@@ -1,32 +1,36 @@
 package kr.hahaha98757.lastweapons.config
 
 import net.minecraftforge.common.config.Configuration
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.common.config.Property
 
-object LWConfig {
-    lateinit var config: Configuration
-
-    fun init(event: FMLPreInitializationEvent) {
-        config = Configuration(event.suggestedConfigurationFile)
-        loadConfig()
-    }
-
-    var toggle = true
+class LWConfig(val config: Configuration) {
+    var enableMod = true
+    var language = "Auto"
     var displayArmors = true
     var displayWeaponsLevel = true
     var displayCooledDownSkill = true
 
+    init {
+        loadConfig()
+    }
+
     private fun loadConfig() {
         config.load()
 
-        toggle = config.get(Configuration.CATEGORY_GENERAL, "Toggle Last Weapons", true, "Displays your weapons when you win.").boolean
-        displayArmors = config.get(Configuration.CATEGORY_GENERAL, "Display Armors", true, "Displays your armors.").boolean
-        displayWeaponsLevel = config.get(Configuration.CATEGORY_GENERAL, "Display Weapons Level", true, "Displays level of weapons and perks.").boolean
-        displayCooledDownSkill = config.get(Configuration.CATEGORY_GENERAL, "Display Cooled Down Skill", true, "Displays a black and white texture when a your skill is on cooldown.").boolean
+        enableMod = createOption("lastweapons.config.enableMod", config.get(Configuration.CATEGORY_GENERAL, "enableMod", true, "lastweapons.config.enableMod.description")).boolean
+        language = createOption("lastweapons.config.language", config.get(Configuration.CATEGORY_GENERAL, "language", "Auto", "lastweapons.config.language.description", arrayOf("Auto", "English (US)", "한국어 (한국)"))).string
+        displayArmors = createOption("lastweapons.config.displayArmors", config.get(Configuration.CATEGORY_GENERAL, "displayArmors", true, "lastweapons.config.displayArmors.description")).boolean
+        displayWeaponsLevel = createOption("lastweapons.config.displayWeaponsLevel", config.get(Configuration.CATEGORY_GENERAL, "displayWeaponsLevel", true, "lastweapons.config.displayWeaponsLevel.description")).boolean
+        displayCooledDownSkill = createOption("lastweapons.config.displayCooledDownSkill", config.get(Configuration.CATEGORY_GENERAL, "displayCooledDownSkill", true, "lastweapons.config.displayCooledDownSkill.description")).boolean
     }
 
     fun save() {
         config.save()
         loadConfig()
+    }
+
+    private fun createOption(langKey: String, prop: Property): Property {
+        prop.languageKey = langKey
+        return prop
     }
 }

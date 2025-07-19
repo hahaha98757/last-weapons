@@ -1,5 +1,6 @@
 package kr.hahaha98757.lastweapons.config
 
+import kr.hahaha98757.lastweapons.LastWeapons
 import kr.hahaha98757.lastweapons.MODID
 import kr.hahaha98757.lastweapons.NAME
 import net.minecraft.client.Minecraft
@@ -14,18 +15,12 @@ class LWGuiFactory: IModGuiFactory {
     override fun initialize(minecraftInstance: Minecraft?) {
     }
 
-    override fun mainConfigGuiClass(): Class<out GuiScreen> {
-        return LWGuiConfig::class.java
-    }
+    override fun mainConfigGuiClass() = LWGuiConfig::class.java
 
-    override fun runtimeGuiCategories(): MutableSet<IModGuiFactory.RuntimeOptionCategoryElement>? {
-        return null
-    }
+    override fun runtimeGuiCategories() = null
 
-    override fun getHandlerFor(element: IModGuiFactory.RuntimeOptionCategoryElement?): IModGuiFactory.RuntimeOptionGuiHandler? {
-        return null
-    }
+    override fun getHandlerFor(element: IModGuiFactory.RuntimeOptionCategoryElement?) = null
 }
 
 class LWGuiConfig(parentScreen: GuiScreen):
-    GuiConfig(parentScreen, ConfigElement(LWConfig.config.getCategory(Configuration.CATEGORY_GENERAL)).childElements, MODID, false, false, "$NAME Configuration")
+    GuiConfig(parentScreen, ConfigElement(LastWeapons.instance.config.config.getCategory(Configuration.CATEGORY_GENERAL)).childElements, MODID, false, false, "$NAME Configuration")

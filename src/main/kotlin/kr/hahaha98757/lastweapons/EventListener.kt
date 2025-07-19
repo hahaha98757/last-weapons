@@ -1,11 +1,9 @@
 package kr.hahaha98757.lastweapons
 
-import kr.hahaha98757.lastweapons.config.LWConfig
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
-import net.minecraft.util.EnumChatFormatting
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.fml.client.event.ConfigChangedEvent
@@ -21,7 +19,7 @@ class EventListener {
 
     @SubscribeEvent
     fun onRender(event: RenderGameOverlayEvent.Text) {
-        if (!LWConfig.toggle) return
+        if (!LastWeapons.instance.config.enableMod) return
         if (isNotPlayZombies()) {
             win = false
             return
@@ -39,7 +37,7 @@ class EventListener {
                 val weapon = weapons[i]
 
                 weapon?.let {
-                    if (i == 4 && LWConfig.displayCooledDownSkill && it.item == Items.dye && it.itemDamage == 8) {
+                    if (i == 4 && LastWeapons.instance.config.displayCooledDownSkill && it.item == Items.dye && it.itemDamage == 8) {
                         val name = it.displayName
                         if ("Heal Skill" in name || "회복 기술" in name) {
                             displayTexture("textures/items/heal_cool.png", x + 20 * i, y)
@@ -53,11 +51,11 @@ class EventListener {
                         }
                     }
 
-                    val level = getLevel(EnumChatFormatting.getTextWithoutFormattingCodes(it.displayName))
+                    val level = getLevel(getText(it.displayName))
 
                     renderItem.renderItemAndEffectIntoGUI(it, x + 20 * i, y)
 
-                    if (LWConfig.displayWeaponsLevel && level != 0)
+                    if (LastWeapons.instance.config.displayWeaponsLevel && level != 0)
                         displayTexture("textures/items/level$level.png", x + 20 * i, y)
                     renderItem.renderItemOverlayIntoGUI(fr, it, x + 20 * i, y, null)
                 }
@@ -65,7 +63,7 @@ class EventListener {
 
             GlStateManager.popAttrib()
 
-            if (LWConfig.displayArmors) {
+            if (LastWeapons.instance.config.displayArmors) {
                 x = (getX() / 2 + 12).toInt()
                 y = (getY() - 60).toInt()
 
@@ -95,7 +93,7 @@ class EventListener {
         var name = itemName
         if ("Ultimate" in itemName) try {
             name = itemName.split("Ultimate")[1].trim()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return 0
         }
         if ("레벨" in itemName) name = itemName.split("레벨")[0].trim()
@@ -116,6 +114,6 @@ class EventListener {
 
     @SubscribeEvent
     fun onConfigChange(event: ConfigChangedEvent.OnConfigChangedEvent) {
-        if (event.modID == MODID) LWConfig.save()
+        if (event.modID == MODID) LastWeapons.instance.config.save()
     }
 }

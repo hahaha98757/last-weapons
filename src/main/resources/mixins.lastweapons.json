@@ -6,5 +6,8 @@
   "client": [
     "MixinGuiIngame",
     "MixinSoundManager"
+  ],
+  "mixins": [
+    "MixinConfigElement"
   ]
 }

@@ -7,6 +7,7 @@ import kr.hahaha98757.lastweapons.gui.GuiUpdateScreen
 import net.minecraft.event.ClickEvent
 import net.minecraft.event.HoverEvent
 import net.minecraft.util.ChatComponentText
+import net.minecraft.util.ChatComponentTranslation
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
@@ -33,7 +34,6 @@ object UpdateChecker {
     init {
         try {
             val myKeyStore = KeyStore.getInstance("JKS")
-            @Suppress("SpellCheckingInspection")
             myKeyStore.load(UpdateChecker.javaClass.getResourceAsStream("/mykeystore.jks"), "changeit".toCharArray())
             val kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
             val tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
@@ -73,23 +73,38 @@ object UpdateChecker {
 
     fun checkUpdate() {
         when (val i = compareVersion()) {
-            0, 3, 4 -> if (!gui) mc.displayGuiScreen(GuiUpdateScreen(i))
-            2 -> addChatLine("You are using the latest version.\n§cThe latest version is not perfect. There may be bugs.")
+            0, 3, 4 -> if (!gui) mc.displayGuiScreen(GuiUpdateScreen(i == 0))
+            2 -> {
+                addLine()
+                addTranslationChat("lastweapons.update.usingLatest")
+                addTranslationChat("lastweapons.update.latestWarning")
+                addLine()
+            }
             5 -> {
-                val url = ChatComponentText("§9Click here to download.").also {
-                    it.chatStyle.setChatClickEvent(ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/hahaha98757/last-weapons/releases"))
-                    it.chatStyle.setChatHoverEvent(HoverEvent(HoverEvent.Action.SHOW_TEXT, ChatComponentText("Open download URL.")))
+                val url = ChatComponentTranslation("lastweapons.update.downloadText").apply {
+                    chatStyle.chatClickEvent = ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/hahaha98757/last-weapons/releases")
+                    chatStyle.chatHoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, ChatComponentTranslation("lastweapons.update.downloadHover"))
                 }
-                val text = ChatComponentText("")
-                text.appendText("$LINE\nThe new latest version has been released. ")
-                text.appendSibling(url)
-                text.appendText("\n§rCurrent version: $VERSION\nLatest version: $latest\n§cThe latest version is not perfect. There may be bugs.\n$LINE")
-                addChat(text)
+                addLine()
+                ChatComponentText("").run {
+                    appendText(getTranslatedString("lastweapons.update.newLatest"))
+                    appendSibling(url)
+                    appendText("\n")
+                    appendText(getTranslatedString("lastweapons.update.currentVer", true, VERSION))
+                    appendText("\n")
+                    appendText(getTranslatedString("lastweapons.update.latestVer", true, latest))
+                    appendText("\n")
+                    appendText(getTranslatedString("lastweapons.update.latestWarning"))
+                    addChat(this)
+                }
+                addLine()
             }
         }
+        gui = true
     }
 
-    //0: Required update, 1: Using recommended(= latest), 2: Using latest, 3: Using old ver(latest != recommended), 4: New recommended, 5: New latest
+    // 0: Required update, 1: Using recommended(= latest), 2: Using latest,
+    // 3: Using old ver(latest != recommended), 4: New recommended, 5: New latest
     private fun compareVersion(): Int {
         val modVer = Version.toVersion(VERSION)
         if (modVer > latest) return 1
@@ -119,6 +134,7 @@ object UpdateChecker {
             Files.copy(connection.inputStream, newMod.toPath(), StandardCopyOption.REPLACE_EXISTING)
             mc.addScheduledTask {
                 println("Run auto update.")
+                println("자동 업데이트를 실행합니다.")
                 runBatchFileAndQuit(File(mc.mcDataDir, "mods/deleter_lastweapons.bat"), """
                     @echo off
                     chcp 65001

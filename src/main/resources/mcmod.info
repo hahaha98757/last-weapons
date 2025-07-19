@@ -2,7 +2,7 @@
   {
     "modid": "${modid}",
     "name": "Last Weapons",
-    "description": "The mod for Hypixel Zombies. Display your weapons when You Win. There is this feature in Zombies Addon.",
+    "description": "게임에서 승리했을 때 가지고 있던 무기와 갑옷을 보여줍니다.",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "https://github.com/hahaha98757/last-weapons",
@@ -11,7 +11,7 @@
       "hahaha98757"
     ],
     "credits": "",
-    "logoFile": "",
+    "logoFile": "logo.png",
     "screenshots": [],
     "dependencies": []
   }

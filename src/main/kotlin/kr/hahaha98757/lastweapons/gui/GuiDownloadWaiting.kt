@@ -1,14 +1,15 @@
 package kr.hahaha98757.lastweapons.gui
 
+import kr.hahaha98757.lastweapons.getTranslatedString
 import net.minecraft.client.gui.GuiScreen
 import org.lwjgl.input.Keyboard
 
 class GuiDownloadWaiting: GuiScreen() {
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        this.drawDefaultBackground()
-        if (!fail) this.drawCenteredString(this.fontRendererObj, "Downloading...", this.width / 2, this.height / 2 - 40, 0xffffff)
-        else this.drawCenteredString(this.fontRendererObj, "Failed download the update.", this.width / 2, this.height / 2 - 40, 0xff5555)
+        drawDefaultBackground()
+        if (!fail) drawCenteredString(fontRendererObj, getTranslatedString("lastweapons.gui.downloadWaiting.title"), width / 2, height / 2 - 40, 0xffffff)
+        else drawCenteredString(fontRendererObj, getTranslatedString("lastweapons.gui.downloadWaiting.failed"), width / 2, height / 2 - 40, 0xff5555)
         super.drawScreen(mouseX, mouseY, partialTicks)
     }
 
